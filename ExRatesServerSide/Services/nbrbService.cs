@@ -17,7 +17,15 @@ namespace ExRatesServerSide.Services
             _httpClient = _httpClientFactory.CreateClient("nbrbClient");
         }
 
-        public async Task<List<RateShort>> GetRangeOfExRateAsync(string currencyId, DateTime startDate, DateTime endDate)
+        public async Task<List<Currency>> GetCurrenciesAsync()
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("currencies");
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var res = JsonSerializer.Deserialize<List<Currency>>(responseBody);
+            return res;
+        }
+
+        public async Task<List<RateShort>> GetRangeOfExRateAsync(int currencyId, DateTime startDate, DateTime endDate)
         {
             var parameters = new Dictionary<string, string>()
             {

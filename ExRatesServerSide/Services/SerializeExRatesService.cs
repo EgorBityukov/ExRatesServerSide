@@ -6,7 +6,7 @@ namespace ExRatesServerSide.Services
 {
     public class SerializeExRatesService : ISerializeExRatesService
     {
-        public async Task SerializeRatesToFileAsync(List<ExRate> serExRates, string path)
+        public async Task SerializeRatesToFileAsync(HashSet<ExRate> serExRates, string path)
         {
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
@@ -14,15 +14,15 @@ namespace ExRatesServerSide.Services
             }
         }
 
-        public async Task<List<ExRate>> DeserializeRatesFromFileAsync(string path)
+        public async Task<HashSet<ExRate>> DeserializeRatesFromFileAsync(string path)
         {
-            List<ExRate> deserExRates = null;
+            HashSet<ExRate> deserExRates = null;
 
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 if (fs.Length > 0)
                 {
-                    deserExRates = await JsonSerializer.DeserializeAsync<List<ExRate>>(fs);
+                    deserExRates = await JsonSerializer.DeserializeAsync<HashSet<ExRate>>(fs);
                 }
             }
 

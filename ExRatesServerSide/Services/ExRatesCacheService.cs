@@ -12,7 +12,7 @@ namespace ExRatesServerSide.Services
         private readonly IMemoryCache _memoryCache;
         private readonly IConfiguration _config;
 
-        private List<ExRate> memoryExRates = null;
+        private HashSet<ExRate> memoryExRates = null;
 
         public ExRatesCacheService(IExRatesService exRatesService,
                                    ISerializeExRatesService serializeExRatesService,
@@ -64,20 +64,20 @@ namespace ExRatesServerSide.Services
             AddExRatesToCache(memoryExRates);
         }
 
-        private async Task UpdateCache(List<ExRate> updExRates)
+        private async Task UpdateCache(HashSet<ExRate> updExRates)
         {
             await _serializeExRatesService.SerializeRatesToFileAsync(updExRates, _config.GetValue<string>("PathSerializer"));
             AddExRatesToCache(updExRates);
         }
 
-        private List<ExRate> GetExRatesFromCache()
+        private HashSet<ExRate> GetExRatesFromCache()
         {
-            List<ExRate> exRates = null;
+            HashSet<ExRate> exRates = null;
             _memoryCache.TryGetValue("exRates", out exRates);
             return exRates;
         }
 
-        private void AddExRatesToCache(List<ExRate> exRates)
+        private void AddExRatesToCache(HashSet<ExRate> exRates)
         {
             _memoryCache.Set("exRates", exRates, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(3)));
         }

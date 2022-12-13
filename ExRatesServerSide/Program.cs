@@ -1,4 +1,5 @@
 
+using ExRatesServerSide.MappingProfiles;
 using ExRatesServerSide.Services;
 using ExRatesServerSide.Services.Interfaces;
 
@@ -12,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMemoryCache();
+
+builder.Services.AddAutoMapper(typeof(ExRateProfile));
 
 builder.Services.AddLogging(loggingBuilder => {
     loggingBuilder.AddFile("logs/log_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts => {
